@@ -674,7 +674,68 @@ footer{
 .outlet-floor{font-weight:1000;color:#0b769f;margin-top:8px}.outlet-floor:first-child{margin-top:0}.outlet-shop{padding-left:10px}
 .guide-item{touch-action:pan-y;user-select:none;-webkit-user-select:none;transition:.16s ease}
 .guide-item.longpress-ready{box-shadow:0 0 0 3px rgba(14,165,233,.20)}.guide-item.dragging{opacity:.78;transform:scale(1.015);background:#f0f9ff}
-</style></head>
+</style>
+<style id="chenyuluoyan-readability-v2">
+/* 陳玉落雁本身是 Thin 字重；用稍大字級、輕微描邊與陰影提升手機可讀性 */
+body{
+  font-size:17px;
+  line-height:1.62;
+  -webkit-text-size-adjust:100%;
+}
+body,button,input,textarea,select{
+  font-family:'TripFont',sans-serif;
+}
+.hero h1{
+  font-size:clamp(2rem,8.2vw,2.75rem);
+  line-height:1.18;
+  letter-spacing:.035em;
+  -webkit-text-stroke:.22px currentColor;
+}
+.hero-sub,.trip-date{
+  font-size:1.02rem;
+  line-height:1.6;
+  -webkit-text-stroke:.14px currentColor;
+}
+.tab{
+  font-size:1rem;
+  -webkit-text-stroke:.16px currentColor;
+}
+.day-label,.time,.modal-time{
+  font-size:.92rem !important;
+  letter-spacing:.08em;
+  -webkit-text-stroke:.18px currentColor;
+}
+.day-title{
+  font-size:1.45rem !important;
+  line-height:1.48 !important;
+  -webkit-text-stroke:.28px currentColor;
+}
+.item-card .name{
+  font-size:1.38rem !important;
+  line-height:1.48 !important;
+  -webkit-text-stroke:.30px currentColor;
+}
+.tag-btn,.day-pill,.foot-btn{
+  font-size:.94rem !important;
+  -webkit-text-stroke:.15px currentColor;
+}
+.modal-title,.packing-title,.tax-title{
+  font-size:1.48rem !important;
+  line-height:1.42 !important;
+  -webkit-text-stroke:.30px currentColor;
+}
+.modal-body,.tax-info-card p,.guide-name,.souvenir-name,.pack-name{
+  font-size:1.08rem;
+  line-height:1.75;
+  -webkit-text-stroke:.20px currentColor;
+}
+.guide-time,.guide-num,.souvenir-note,.pack-meta{
+  font-size:.94rem;
+  -webkit-text-stroke:.14px currentColor;
+}
+</style>
+
+</head>
 <body>
 <div class="app-outer"><div class="app-shell"><div id="app" class="screen"></div><div id="modal-root"></div></div></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -907,7 +968,7 @@ function dayHTML(){
  ${it.taxJump?`<button class="tag-btn store-jump" data-tax-jump="1">🧾 退稅流程</button>`:''}
  </div></div></div></div>`).join('');
  const pills=ITINERARY.map((x,i)=>`<button class="day-pill ${i===state.day?'active':''}" data-day="${i}">${esc(x.date)}</button>`).join('');
- return `<main class="scroll"><section><div class="card day-card"><div class="day-head"><div><div class="day-label">DAY ${d.docDay}</div><div class="day-title">${esc(d.title)}</div></div><div class="mini-icon"><img src="${iconSrc(DAY_HEADER_ICONS[state.day]||'default')}" /></div></div>${d.dayNote?`<div class="day-note">${nl(d.dayNote)}</div>`:''}<div class="day-nav">${pills}</div></div>${items}</section></main><footer class="glass"><div class="foot-row"><button class="foot-btn prev" data-prev="1">← 上一天</button><button class="foot-btn next" data-next="1">${state.day===ITINERARY.length-1?'返回第一天':'下一天 →'}</button></div></footer>`;
+ return `<main class="scroll"><section><div class="card day-card"><div class="day-head"><div><div class="day-label">DAY ${d.docDay}</div><div class="day-title">${esc(d.title)}</div></div></div>${d.dayNote?`<div class="day-note">${nl(d.dayNote)}</div>`:''}<div class="day-nav">${pills}</div></div>${items}</section></main><footer class="glass"><div class="foot-row"><button class="foot-btn prev" data-prev="1">← 上一天</button><button class="foot-btn next" data-next="1">${state.day===ITINERARY.length-1?'返回第一天':'下一天 →'}</button></div></footer>`;
 }
 
 
