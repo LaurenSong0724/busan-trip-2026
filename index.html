@@ -1201,15 +1201,35 @@ function showModal(){
   host.querySelector('[data-modal-bg]')?.addEventListener('click', e=>{ if(e.target.dataset.modalBg) closeModal(); });
   host.querySelectorAll('[data-choice-detail]').forEach(b=>b.addEventListener('click',()=>{
     const i=Number(b.dataset.choiceDetail), choices=(state.modal&&state.modal.choices)||[], c=choices[i];
-    if(c){ state.modal={type:'choiceDetail',choice:c,parent:{type:'choice',guide:state.modal.guide,choices:choices}}; showModal(); }
+    if(c){
+      const body=host.querySelector('.modal-body');
+      const parentScroll=body ? body.scrollTop : 0;
+      state.modal={type:'choiceDetail',choice:c,parent:{type:'choice',guide:state.modal.guide,choices:choices,restoreScroll:parentScroll,focusChoice:i}};
+      showModal();
+    }
   }));
   bindModalExtras();
 }
 function closeModal(){
   const keep=Number(sessionStorage.getItem('busan_last_scroll') || currentScrollTop());
   if(state.modal && typeof state.modal==='object' && state.modal.type==='choiceDetail' && state.modal.parent){
-    state.modal=state.modal.parent;
+    const parent=state.modal.parent;
+    state.modal=parent;
     showModal();
+    requestAnimationFrame(()=>{
+      const body=host.querySelector('.modal-body');
+      if(body){
+        if(Number.isFinite(parent.restoreScroll)) body.scrollTop=parent.restoreScroll;
+        const card=host.querySelectorAll('[data-choice-detail]')[parent.focusChoice];
+        if(card){
+          const item=card.closest('.choice-guide-card');
+          if(item){
+            const br=body.getBoundingClientRect(), ir=item.getBoundingClientRect();
+            if(ir.top<br.top || ir.bottom>br.bottom) body.scrollTop += ir.top-br.top-12;
+          }
+        }
+      }
+    });
     return;
   }
   state.modal=null;
