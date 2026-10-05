@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>Busan Ultimate v135｜互動修正版</title>
+<title>Busan Ultimate v137｜互動修正版</title>
 <style>
 @font-face{font-family:'TripFont';src:url('./ChenYuluoyan-2.0-Thin.ttf') format('truetype');font-weight:100 900;font-style:normal;font-display:swap}
 *{box-sizing:border-box}
@@ -371,14 +371,7 @@ header,
   backdrop-filter:blur(10px);
 }
 
-.welcome-card::before {
-  content:"";
-  display:block;
-  width:230px;
-  height:120px;
-  margin:0 auto 10px;
-  background:var(--busan-icons) center/contain no-repeat;
-}
+.welcome-card::before{content:none!important;display:none!important;background:none!important;width:0!important;height:0!important;margin:0!important}
 
 .welcome-icon { display:none !important; }
 
@@ -487,10 +480,7 @@ header,
 }
 
 @media (max-width:600px) {
-  .welcome-card::before {
-    width:190px;
-    height:100px;
-  }
+  .welcome-card::before{display:none!important;content:none!important}
   .icon-frame,.mini-icon {
     width:62px !important;
     height:62px !important;
@@ -1211,12 +1201,17 @@ function showModal(){
   host.querySelector('[data-modal-bg]')?.addEventListener('click', e=>{ if(e.target.dataset.modalBg) closeModal(); });
   host.querySelectorAll('[data-choice-detail]').forEach(b=>b.addEventListener('click',()=>{
     const i=Number(b.dataset.choiceDetail), choices=(state.modal&&state.modal.choices)||[], c=choices[i];
-    if(c){ state.modal={type:'choiceDetail',choice:c}; showModal(); }
+    if(c){ state.modal={type:'choiceDetail',choice:c,parent:{type:'choice',guide:state.modal.guide,choices:choices}}; showModal(); }
   }));
   bindModalExtras();
 }
 function closeModal(){
   const keep=Number(sessionStorage.getItem('busan_last_scroll') || currentScrollTop());
+  if(state.modal && typeof state.modal==='object' && state.modal.type==='choiceDetail' && state.modal.parent){
+    state.modal=state.modal.parent;
+    showModal();
+    return;
+  }
   state.modal=null;
   const host=document.getElementById('modal-root');
   if(host) host.innerHTML='';
